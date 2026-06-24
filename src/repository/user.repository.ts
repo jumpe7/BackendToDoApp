@@ -7,7 +7,7 @@ export class UserRepository {
     }
 
     async createUser(username: string, email: string, hashPassword: string){
-        const result = await pool.query('INSERT INTO users (username, email,password) VALUES ($1, $2, $3) RETURNING *, [username, email, hashPassword])');
+        const result = await pool.query('INSERT INTO users (username, email,password) VALUES ($1, $2, $3) RETURNING *', [username, email, hashPassword]);
         return result.rows[0];
     }
 }
