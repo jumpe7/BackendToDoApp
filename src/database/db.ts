@@ -11,3 +11,12 @@ export const pool = new Pool({
     database: process.env.DATABASE_NAME,
     port: Number(process.env.DATABASE_PORT),
 })
+
+export async function dbCheckConnection() {
+    try {
+        const result = await pool.query('SELECT NOW()');
+        console.log('База данных подключена');
+    } catch(e){
+        console.error(`Ошибка подключения к базе данных: ${e}`);
+    }
+}

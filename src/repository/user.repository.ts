@@ -6,8 +6,18 @@ export class UserRepository {
         return result.rows[0]||null;
     }
 
+    async findByUsername(username: string){
+        const result = await pool.query('SELECT * FROM users WHERE username= $1', [username]);
+        return result.rows[0]||null;
+    }
+
     async createUser(username: string, email: string, hashPassword: string){
         const result = await pool.query('INSERT INTO users (username, email,password) VALUES ($1, $2, $3) RETURNING *', [username, email, hashPassword]);
         return result.rows[0];
+    }
+
+    async getAllUsers(){
+        const result = await pool.query('SELECT * FROM users');
+        return result.rows;
     }
 }
