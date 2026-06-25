@@ -9,5 +9,6 @@ authRoutes.get('/getAdmin', authControllers.getAllUsersAdmin)
 authRoutes.post('/register', authControllers.registerUser)
 authRoutes.post('/login', authControllers.loginUser)
 authRoutes.put('/update/:id', authControllers.updateUser)
+authRoutes.delete('/delete/:id', authControllers.deleteUser)
 
 export default authRoutes;

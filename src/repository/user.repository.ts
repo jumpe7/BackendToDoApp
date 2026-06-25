@@ -21,6 +21,11 @@ export class UserRepository {
         return result.rows[0];
     }
 
+    async deleteUser(id: string | string[]){
+        const result = await pool.query('DELETE FROM users WHERE id = $1 RETURNING *', [id]);
+        return result.rows[0];
+    }
+
     async getAllUsers(){
         const result = await pool.query('SELECT username,email FROM users');
         return result.rows;

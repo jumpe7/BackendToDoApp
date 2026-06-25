@@ -55,4 +55,9 @@ export class UserService {
         }
         return result;
     }
+
+    async deleteUser(id: string | string[]){
+        const result = await userRepository.deleteUser(id);
+        return result;
+    }
 }

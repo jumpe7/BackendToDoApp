@@ -1,6 +1,7 @@
 import type {Request, Response} from 'express';
 import {UserService} from "../services/user.service.js";
 
+
 const userService = new UserService();
 
 export class AuthControllers {
@@ -57,5 +58,15 @@ export class AuthControllers {
 
         const user = await userService.updateUser(username,email,password,id)
         return res.status(200).json(user);
+    }
+
+    async deleteUser(req: Request, res: Response){
+        const id = req.params.id;
+        if (!id) {
+            throw new Error('Неверный id');
+        }
+
+        const result = await userService.deleteUser(id);
+        return res.status(200).json(result);
     }
 }
