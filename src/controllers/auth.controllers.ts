@@ -9,6 +9,11 @@ export class AuthControllers {
         return res.status(200).json(result);
     }
 
+    async getAllUsersAdmin(req: Request, res: Response){
+        const result = await userService.getUsersAdmin()
+        return res.status(200).json(result);
+    }
+
     async registerUser(req: Request, res: Response){
         try {
             const {username, email, password} = req.body;
@@ -39,5 +44,18 @@ export class AuthControllers {
         }
 
         const user = userService.login(username, password);
+
+        return res.status(200).json('success');
+    }
+
+    async updateUser(req: Request, res: Response){
+        const {username, email, password} = req.body;
+        const id = req.params.id;
+        if (!username || !email || !password){
+            res.status(400).send('Неверные данные');
+        }
+
+        const user = await userService.updateUser(username,email,password,id)
+        return res.status(200).json(user);
     }
 }

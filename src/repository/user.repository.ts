@@ -16,7 +16,17 @@ export class UserRepository {
         return result.rows[0];
     }
 
+    async updateUser(username: string, email: string, password: string, id:  string | string[] | undefined){
+        const result = await pool.query('UPDATE users SET username = $1, email = $2, password = $3 WHERE id = $4 RETURNING *', [username, email, password, id]);
+        return result.rows[0];
+    }
+
     async getAllUsers(){
+        const result = await pool.query('SELECT username,email FROM users');
+        return result.rows;
+    }
+
+    async getAllUsersAdmin(){
         const result = await pool.query('SELECT * FROM users');
         return result.rows;
     }

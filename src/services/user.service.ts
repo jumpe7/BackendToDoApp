@@ -10,6 +10,11 @@ export class UserService {
         return users;
     }
 
+    async getUsersAdmin(){
+        const users = await userRepository.getAllUsersAdmin()
+        return users;
+    }
+
     async createUser(username: string,email: string,password: string){
 
         const exists = await userRepository.findByEmail(email);
@@ -25,15 +30,29 @@ export class UserService {
 
     async login(username: string, password: string){
         const exists = await userRepository.findByUsername(username);
-        if(!exists){
+        if(!exists) {
             throw new Error("Пользователь не зарегистрирован");
         }
-        const dbPassword = exists.hashPassword;
-        const validPassword = await bcrypt.compareSync(password, dbPassword);
+        const dbPassword = exists.password;
+        const validPassword = await bcrypt.compare(password, dbPassword);
 
         if(!validPassword){
             throw new Error('Неверный пароль')
         }
 
+        return exists;
+    }
+
+    async updateUser(username: string, email: string, password: string, id:  string | string[] | undefined){
+        // const exists = await userRepository.findByUsername(username);
+        // if(!exists){
+        //     throw new Error('Пользователя с таким Юзернеймом не сущестует');
+        // }
+        const hashPassword = await bcrypt.hash(password, 12);
+        const result = await userRepository.updateUser(username,email,hashPassword, id);
+        if (result.rowCount == 0){
+            throw new Error('Пользователь не найден')
+        }
+        return result;
     }
 }
