@@ -44,9 +44,9 @@ export class AuthControllers {
             res.status(400).send('Юзер или пароль невалидны');
         }
 
-        const user = userService.login(username, password);
+        const user = await userService.login(username, password);
 
-        return res.status(200).json('success');
+        return res.status(200).json(user);
     }
 
     async updateUser(req: Request, res: Response){

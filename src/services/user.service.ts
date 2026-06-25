@@ -1,7 +1,9 @@
 import bcrypt from 'bcrypt';
 import {UserRepository} from "../repository/user.repository.js";
+import {TokenService} from "./token.service.js";
 
 const userRepository = new UserRepository();
+const tokenService = new TokenService();
 
 export class UserService {
 
@@ -39,6 +41,8 @@ export class UserService {
         if(!validPassword){
             throw new Error('Неверный пароль')
         }
+
+        const token = tokenService.generateToken({id: exists.id, username: exists.username});
 
         return exists;
     }

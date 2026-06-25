@@ -8,7 +8,7 @@ export class UserRepository {
 
     async findByUsername(username: string){
         const result = await pool.query('SELECT * FROM users WHERE username= $1', [username]);
-        return result.rows[0]||null;
+        return result.rows[0];
     }
 
     async createUser(username: string, email: string, hashPassword: string){
