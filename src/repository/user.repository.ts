@@ -35,4 +35,19 @@ export class UserRepository {
         const result = await pool.query('SELECT * FROM users');
         return result.rows;
     }
+
+    async saveToken(token: string, userId: string){
+        const tokens = await pool.query('INSERT INTO token (token, user_id) VALUES ($1, $2) RETURNING *', [token, userId]);
+        return tokens;
+    }
+
+    async checkToken(userId: string){
+        const tokens = await pool.query('SELECT 1 FROM token WHERE user_id = $1 LIMIT 1', [userId])
+        return tokens;
+    }
+
+    async updateToken( token: string){
+        const tokens = await pool.query(`INSERT INTO token (refreshToken) VALUES ($1) RETURNING *`, [token])
+        return tokens;
+    }
 }

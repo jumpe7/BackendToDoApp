@@ -3,6 +3,10 @@ import {UserService} from "../services/user.service.js";
 
 
 const userService = new UserService();
+const cookieParser = {
+    httpOnly: true,
+    maxAge: 30 * 24 * 60 * 60 * 1000
+}
 
 export class AuthControllers {
     async getAllUser(req: Request, res: Response){
@@ -39,14 +43,14 @@ export class AuthControllers {
     }
 
     async loginUser(req: Request, res: Response){
-        const {username, password} = req.body;
-        if (!username || !password){
+        const {email, password} = req.body;
+        if (!email || !password){
             res.status(400).send('Юзер или пароль невалидны');
         }
 
-        const user = await userService.login(username, password);
+        const user = await userService.login(email, password);
 
-        return res.status(200).json(user);
+        // res.cookie('refreshToken');
     }
 
     async updateUser(req: Request, res: Response){

@@ -30,8 +30,8 @@ export class UserService {
 
     }
 
-    async login(username: string, password: string){
-        const exists = await userRepository.findByUsername(username);
+    async login(email: string, password: string){
+        const exists = await userRepository.findByEmail(email);
         if(!exists) {
             throw new Error("Пользователь не зарегистрирован");
         }
@@ -44,7 +44,10 @@ export class UserService {
 
         const token = tokenService.generateToken({id: exists.id, username: exists.username});
 
-        return exists;
+        return {
+            user: exists,
+            token: token
+        };
     }
 
     async updateUser(username: string, email: string, password: string, id:  string | string[] | undefined){
